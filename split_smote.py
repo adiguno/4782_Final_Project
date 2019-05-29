@@ -20,8 +20,35 @@ def normaliz():
         with open('normalized_features_labels.pkl', 'wb') as f:
             pickle.dump([copy, labels], f)
 
+def get_train_test():
+    '''
+    prepare training data
+    '''
+    with open('normalized_features_labels.pkl', 'rb') as f:  
+        features, labels = pickle.load(f)    
+        x_train, x_test, y_train, y_test = train_test_split(features, labels, test_size=.2)
+        # SMOTE
+        sm = SMOTE()
+        SMOTE_features, SMOTE_labels = sm.fit_resample(x_train, y_train)
+        # reshaped training features and labels
+        depth, pla = SMOTE_features.shape
+        reshaped_SMOTE_features = np.reshape(SMOTE_features, (depth, 15,1))
+        reshaped_SMOTE_labels = np.reshape(SMOTE_labels, (depth,))
+
+        # reshaped testing features and labels
+        d, pla = x_test.shape
+        reshaped_test_features= np.reshape(x_test, (d,15,1))
+        reshaped_test_labels = np.reshape(y_test, (d,))
+        
+        return reshaped_SMOTE_features, reshaped_SMOTE_labels, reshaped_test_features, reshaped_test_labels
+
+
+
 
 def gen_model():
+    '''
+    2 models: (9,4), (9,10)
+    '''
     shapes = [(9,4), (9,10)]
     models = []
     for shape in shapes:
@@ -69,14 +96,18 @@ if __name__ == "__main__":
 
     x_train, x_test, y_train, y_test = train_test_split(features, labels, test_size=.2)
 
+    # data stat
     preterm = 0
     for item in y_train:
         if item == 1:
             preterm +=1
     print('preterm before %s' % preterm)
+
     # SMOTE
     sm = SMOTE()
     SMOTE_features, SMOTE_labels = sm.fit_resample(x_train, y_train)
+
+    # data stat
     preterm = 0
     term = 0
     for item in SMOTE_labels:
