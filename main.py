@@ -11,6 +11,8 @@ from imblearn.over_sampling import SMOTE
 import tensorFlowTesting as tft
 import csv
 
+FEATURES = ['parity', 'maternal age', 'previous abortions', 'weight', 'hypertension', 'diabetes','smoker','bleeding first trimester', 'bleeding second trimester', 'funneling', 'placental position','Root mean square', 'median frequency', 'peak frequency', 'sample entropy','gestation period']
+
 # 13 minutes op
 def get_records():
     """
@@ -55,33 +57,46 @@ if __name__ == "__main__":
     # with open('features_labels.pkl', 'wb') as f: 
     #     pickle.dump([combined_features, labels],f)
 
-    # # gets the features and outputs (labels = gestation periods)
-    # with open('features_labels.pkl', 'rb') as f:  
-    #     features, labels = pickle.load(f)
-    # print(features.shape)
-    # # print(labels.shape)
-    
-    # # preterm = 1
-    # # term = 0
-    # # formatting the labels
-    # for x in np.nditer(labels, op_flags=['readwrite']):
-    #     if x < 37:
-    #         x[...] = 1
-    #     else: 
-    #         x[...] = 0
-    # labels = labels.astype(int)
-    # labels = labels.flatten()
-    # # gets the features and outputs (labels = gestation periods)
-    # with open('actual_features_labels.pkl', 'wb') as f:  
-    #     pickle.dump([features, labels], f)
+    # gets the features and outputs (labels = gestation periods)
+    with open('features_labels.pkl', 'rb') as f:  
+        features, labels = pickle.load(f)
+        
+        with open('project_features_labels.csv', 'w') as csv_file:
+            csv_writer = csv.writer(csv_file, delimiter=',')
+            csv_writer.writerow([feature for feature in FEATURES])
+            for row in range(len(features)):
+                print(features[row])
 
-    # # SMOTE
-    # sm = SMOTE()
-    # SMOTE_features, SMOTE_labels = sm.fit_resample(features, labels)
-    # with open('SMOTE_features_labels.pkl', 'wb') as f: 
-    #     pickle.dump([SMOTE_features, SMOTE_labels],f)
-    # # print_10(SMOTE_features)
-    # # print_10(SMOTE_labels)
+        # print(features.shape)
+    cout = 0
+    for feature in features:
+        cout+=1
+    print(cout)
+#     # preterm = 1
+#     # term = 0
+#     # formatting the labels
+#     for x in np.nditer(labels, op_flags=['readwrite']):
+#         if x < 37:
+#             x[...] = 1
+#         else: 
+#             x[...] = 0
+#     # label is converted to int and falttened
+#     labels = labels.astype(int)
+#     labels = labels.flatten()
+#     print(labels.shape)
+#     print(features[:5])
+#     print(labels[:5])
+# #     # gets the features and outputs (labels = gestation periods)
+# #     with open('actual_features_labels.pkl', 'wb') as f:  
+# #         pickle.dump([features, labels], f)
+
+#     # SMOTE
+#     sm = SMOTE()
+#     SMOTE_features, SMOTE_labels = sm.fit_resample(features, labels)
+#     with open('SMOTE_features_labels.pkl', 'wb') as f: 
+#         pickle.dump([SMOTE_features, SMOTE_labels],f)
+    # print_10(SMOTE_features)
+    # print_10(SMOTE_labels)
 
     # # get SMOTE data
     # with open('SMOTE_features_labels.pkl', 'rb') as f:  
