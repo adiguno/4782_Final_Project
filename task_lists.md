@@ -16,3 +16,8 @@ Testing:
 - [ ] original vs normalized features
 - [ ] split before smote
 - [ ] dropped records handling
+
+Format data for R:
+- [x] read and label features
+- [ ] extract data
+- [ ] export to csv
