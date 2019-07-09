@@ -10,8 +10,8 @@ requests = "*"
 wfdb = "*"
 numpy = "*"
 scikit-learn = "*"
-tensorflow = "*"
 imbalanced-learn = "*"
+tensorflow = "*"
 
 [requires]
-
+python_version = "3.5"

@@ -2,13 +2,15 @@ import time
 import numpy as np 
 import pickle
 from sklearn.model_selection import train_test_split
+import split_smote
 import tensorflow as tf
 from tensorflow.keras.callbacks import TensorBoard
 import matplotlib.pyplot as plt
 import csv
 
 
-def generate_best_model(features, labels):
+# def generate_best_model(features, labels):
+def generate_best_model():
     '''
     Generates 144 models until it saves the 10 models with above 80% accuracy
     Models have different combinations of the numbers of neurons in the hidden layers
@@ -31,7 +33,8 @@ def generate_best_model(features, labels):
             model.compile(optimizer='adam',
                     loss='sparse_categorical_crossentropy',
                     metrics=['accuracy'])
-            x_train, x_test, y_train, y_test = train_test_split(features, labels, test_size=.2)
+            # x_train, x_test, y_train, y_test = train_test_split(features, labels, test_size=.2)
+            x_train, x_test, y_train, y_test = split_smote.get_train_test()
             model.fit(x_train, y_train, epochs=300)
             los, acc = model.evaluate(x_test, y_test)
             if (acc > .8):
@@ -123,15 +126,18 @@ def initial_decent_model():
 
 
 if __name__ == "__main__":
-    with open('SMOTE_features_labels.pkl', 'rb') as f:  
-            features, labels = pickle.load(f)
+    # with open('SMOTE_features_labels.pkl', 'rb') as f:  
+    #         features, labels = pickle.load(f)
 
-    # reshape data
-    features = np.reshape(features, (300, 15,1) )
-    labels = np.reshape(labels, (300,) )
+    # # reshape data
+    # features = np.reshape(features, (300, 15,1) )
+    # labels = np.reshape(labels, (300,) )
 
-    # generate models
+    # # generate models
     # generate_best_model(features, labels)
+
+    # get top 10 models
+    generate_best_model()
 
     # # initial model screening
     # accuracy_models = []
@@ -148,61 +154,61 @@ if __name__ == "__main__":
     #     print(mod.summary())
     # # print(accuracy_models)
 
-    # graphs
-    # (hidden layer 1, hidden layer 2)
-    # models configuration
-    a = [(6,8), (7,7), (7,8), (8,9), (9,4), (9,10), (9,13), (10,11), (11,10), (11,14)]
-    i = 0    
+    # # graphs
+    # # (hidden layer 1, hidden layer 2)
+    # # models configuration
+    # a = [(6,8), (7,7), (7,8), (8,9), (9,4), (9,10), (9,13), (10,11), (11,10), (11,14)]
+    # i = 0    
 
-    # get tensorboard graph of a newly trained model
-    for tup in a:
-        hid1, hid2 = tup
-        NAME = 'model_{}'.format(i)
-        tensorboard = TensorBoard(log_dir='logs/{}'.format(NAME))
-        x_train, x_test, y_train, y_test = train_test_split(features, labels, test_size=.2)
-        model = tf.keras.models.Sequential([tf.keras.layers.Flatten(input_shape=(15, 1)),
-                    tf.keras.layers.Dense(hid1, activation=tf.nn.relu),
-                    tf.keras.layers.Dense(hid2, activation=tf.nn.relu),
-                    tf.keras.layers.Dropout(0.2),
-                    tf.keras.layers.Dense(2, activation=tf.nn.softmax)])
-        model.compile(optimizer='adam',
-                    loss='sparse_categorical_crossentropy',
-                    metrics=['accuracy'])  
-        acc_history = model.fit(x_train, y_train, epochs=300,
-                                   callbacks=[tensorboard])
-        i +=1
+    # # get tensorboard graph of a newly trained model
+    # for tup in a:
+    #     hid1, hid2 = tup
+    #     NAME = 'model_{}'.format(i)
+    #     tensorboard = TensorBoard(log_dir='logs/{}'.format(NAME))
+    #     x_train, x_test, y_train, y_test = train_test_split(features, labels, test_size=.2)
+    #     model = tf.keras.models.Sequential([tf.keras.layers.Flatten(input_shape=(15, 1)),
+    #                 tf.keras.layers.Dense(hid1, activation=tf.nn.relu),
+    #                 tf.keras.layers.Dense(hid2, activation=tf.nn.relu),
+    #                 tf.keras.layers.Dropout(0.2),
+    #                 tf.keras.layers.Dense(2, activation=tf.nn.softmax)])
+    #     model.compile(optimizer='adam',
+    #                 loss='sparse_categorical_crossentropy',
+    #                 metrics=['accuracy'])  
+    #     acc_history = model.fit(x_train, y_train, epochs=300,
+    #                                callbacks=[tensorboard])
+    #     i +=1
     
-        acc = []
+    #     acc = []
 
-    # get accuracy, sensitivity, specificity of 30 trials of he 10 models
-    avg_acc_out = []
-    avg_sen_out = []
-    avg_spe_out = []
-    # 10 models, 30 trials
-    for i in range(10):
-        model = tf.keras.models.load_model('{}.model'.format(i))
-        acc = []
-        sen = []
-        spe = []
-        for i in range(30):
-            x_train, x_test, y_train, y_test = train_test_split(features, labels, test_size=.2, random_state=i)
-            # model.fit(x_train, y_train, epochs=300)
-            loss, ac = model.evaluate(x_test, y_test)
-            predictions = model.predict(x_test)
-            sens, spec = sensitivity_and_specificity(predictions, y_test)
-            acc.append(ac)
-            sen.append(sens)
-            spe.append(spec)
-        avg_acc =  sum(acc)/len(acc)
-        avg_sen =  sum(sen)/len(sen)
-        avg_spe =  sum(spe)/len(spe)
-        avg_acc_out.append(avg_acc)
-        avg_sen_out.append(avg_sen)
-        avg_spe_out.append(avg_spe)
-    # Write acc, sen, spe to a csv
-    with open('model_performaces.csv', mode='w') as employee_file:
-        employee_writer = csv.writer(employee_file, delimiter=',', quotechar='"', quoting=csv.QUOTE_MINIMAL)
-        employee_writer.writerow(['accuracy', 'sensitivity', 'specificity'])
-        for index in range(10):
-            employee_writer.writerow(['model_{}'.format(index), avg_acc_out[index], avg_sen_out[index], avg_spe_out[index]])
+    # # get accuracy, sensitivity, specificity of 30 trials of he 10 models
+    # avg_acc_out = []
+    # avg_sen_out = []
+    # avg_spe_out = []
+    # # 10 models, 30 trials
+    # for i in range(10):
+    #     model = tf.keras.models.load_model('{}.model'.format(i))
+    #     acc = []
+    #     sen = []
+    #     spe = []
+    #     for i in range(30):
+    #         x_train, x_test, y_train, y_test = train_test_split(features, labels, test_size=.2, random_state=i)
+    #         # model.fit(x_train, y_train, epochs=300)
+    #         loss, ac = model.evaluate(x_test, y_test)
+    #         predictions = model.predict(x_test)
+    #         sens, spec = sensitivity_and_specificity(predictions, y_test)
+    #         acc.append(ac)
+    #         sen.append(sens)
+    #         spe.append(spec)
+    #     avg_acc =  sum(acc)/len(acc)
+    #     avg_sen =  sum(sen)/len(sen)
+    #     avg_spe =  sum(spe)/len(spe)
+    #     avg_acc_out.append(avg_acc)
+    #     avg_sen_out.append(avg_sen)
+    #     avg_spe_out.append(avg_spe)
+    # # Write acc, sen, spe to a csv
+    # with open('model_performaces.csv', mode='w') as employee_file:
+    #     employee_writer = csv.writer(employee_file, delimiter=',', quotechar='"', quoting=csv.QUOTE_MINIMAL)
+    #     employee_writer.writerow(['accuracy', 'sensitivity', 'specificity'])
+    #     for index in range(10):
+    #         employee_writer.writerow(['model_{}'.format(index), avg_acc_out[index], avg_sen_out[index], avg_spe_out[index]])
 
