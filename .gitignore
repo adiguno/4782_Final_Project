@@ -1,3 +1,9 @@
+# ignored directories
 .vscode/
+.ipynb_checkpoints/
 
+# ignored files
 records.pkl
+
+# ignored file patterns
+
