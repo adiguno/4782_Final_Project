@@ -4,7 +4,7 @@ Use Physionet EHG preterm/term database to make a classifier.
 The classifier is able to classify whether the patient will have a preterm or a term labor,
 using EHG signal features and past medical history.
 
-[More in-depth description](ProjectSummary.pdf)
+[More in-depth project description](ProjectSummary.pdf)
 
 Physionet database:
 https://physionet.org/physiobank/database/tpehgdb/
