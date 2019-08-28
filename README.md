@@ -43,6 +43,17 @@ Running the main.py will print the accuracy, sensitivity, and specificity of our
 pipenv run .\main.py
 ```
 
+Model Accuracy:
+![alt-text-1](training_accuracy.png "title-1")
+Steadily improving with each epoch. 
+
+Model Loss:
+![alt-text-2](training_loss.png "title-2")
+No overfitting. 
+
+## Future Plans
+Implement Random Forest, logistic regression, and other ML models
+
 ## Built With
 
 * [pipenv](https://pypi.org/project/pipenv/) - The virtual environment
