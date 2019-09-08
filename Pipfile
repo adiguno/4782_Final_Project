@@ -11,6 +11,8 @@ wfdb = "*"
 numpy = "*"
 scikit-learn = "*"
 imbalanced-learn = "*"
+pandas = "*"
+jupyter = "*"
 tensorflow = "*"
 
 [requires]
