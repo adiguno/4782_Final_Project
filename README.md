@@ -9,6 +9,14 @@ using EHG signal and past medical history features, with an average sensitivity 
 Physionet database:
 https://physionet.org/physiobank/database/tpehgdb/
 
+## Table of Contents
+* [Getting Started](#getting-started)
+* [Methodology](#method)
+* [Future Plans](#future)
+* [Built with](#built)
+* [Authors](#authors)
+
+# <a name="getting-started"></a>
 ## Getting Started
 
 We are using Python 3x, pip, and pipenv.
@@ -29,23 +37,28 @@ Once you have Python 3x, pipenv, and the repo downloaded, go to the root directo
 pipenv install
 ```
 
-## Running the tests
+### Running the scripts
 
 Running different files:
 ```
 pipenv run .\[filename]
 ```
 
-### Example
 Running the main.py will print the accuracy, sensitivity, and specificity of our best classifier, model 6, and output a csv file with the sensitivity and specificity for each of the 30 trials.
 
 ```
 pipenv run .\main.py
 ```
 
+# <a name="method"></a>
+## Methodology
+
+
+# <a name="future"></a>
 ## Future Plans
 Implement Random Forest, logistic regression, and other ML models
 
+# <a name="built"></a>
 ## Built With
 
 * [pipenv](https://pypi.org/project/pipenv/) - The virtual environment
@@ -55,6 +68,7 @@ Implement Random Forest, logistic regression, and other ML models
 * [numpy](https://pypi.org/project/numpy/) - Used for fomatting the data
 * [scikit-learn](https://pypi.org/project/scikit-learn/) - Used for splitting the data
 
+# <a name="authors"></a>
 ## Authors
 
 * **Dian Guo** 
