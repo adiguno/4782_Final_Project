@@ -2,7 +2,9 @@
 
 Use Physionet EHG preterm/term database to make a classifier. 
 The classifier is able to classify whether the patient will have a preterm or a term labor,
-using EHG signal features and past medical history.
+using EHG signal and past medical history features, with an average sensitivity of 92.6%. 
+
+[More in-depth project description, including our research and design approach.](ProjectSummary.pdf)
 
 Physionet database:
 https://physionet.org/physiobank/database/tpehgdb/
@@ -40,6 +42,9 @@ Running the main.py will print the accuracy, sensitivity, and specificity of our
 ```
 pipenv run .\main.py
 ```
+
+## Future Plans
+Implement Random Forest, logistic regression, and other ML models
 
 ## Built With
 
