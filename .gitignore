@@ -1,5 +1,7 @@
 # ignored directories
 /.vscode/*
+settings.json
+
 .ipynb_checkpoints/
 
 # ignored files
