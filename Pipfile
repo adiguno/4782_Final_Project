@@ -16,6 +16,7 @@ jupyter = "*"
 tensorflow = "*"
 seaborn = "*"
 plotly = "*"
+pandas-profiling = "*"
 
 [requires]
 python_version = "3.5"
